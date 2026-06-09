@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>中国近现代史期末复习</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="hero">
+      <img src="assets/history-study-banner.png" alt="" class="hero__image">
+      <div class="hero__shade"></div>
+      <nav class="topbar" aria-label="复习导航">
+        <div class="brand">
+          <span class="brand__mark">史</span>
+          <span>期末复习</span>
+        </div>
+        <div class="quick-stats" aria-live="polite">
+          <span id="totalStat">0 题</span>
+          <span id="knownStat">0 已掌握</span>
+          <span id="starStat">0 收藏</span>
+        </div>
+      </nav>
+      <section class="hero__content">
+        <p class="eyebrow">中国近现代史</p>
+        <h1>碎片时间刷名词与论述</h1>
+        <div class="hero__actions">
+          <button class="primary-button" id="dailyBtn" type="button">今日 20 题</button>
+          <button class="ghost-button" id="shuffleBtn" type="button" aria-label="随机一题">↻</button>
+        </div>
+      </section>
+    </header>
+
+    <main class="shell">
+      <aside class="panel filters" aria-label="筛选">
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="搜索考点、章节、关键词">
+        </label>
+
+        <div class="segmented" role="group" aria-label="题型">
+          <button class="is-active" type="button" data-type="all">全部</button>
+          <button type="button" data-type="term">名词</button>
+          <button type="button" data-type="essay">论述</button>
+        </div>
+
+        <div class="filter-group">
+          <p>状态</p>
+          <button class="filter-chip is-active" type="button" data-filter="all">全部题库</button>
+          <button class="filter-chip" type="button" data-filter="learning">待巩固</button>
+          <button class="filter-chip" type="button" data-filter="known">已掌握</button>
+          <button class="filter-chip" type="button" data-filter="starred">收藏</button>
+        </div>
+
+        <div class="filter-group">
+          <p>专题</p>
+          <div class="tag-cloud" id="tagCloud"></div>
+        </div>
+      </aside>
+
+      <section class="study-area">
+        <div class="toolbar">
+          <div>
+            <p class="toolbar__label">当前题组</p>
+            <h2 id="deckTitle">全部题库</h2>
+          </div>
+          <div class="view-toggle" role="group" aria-label="视图">
+            <button class="is-active" id="cardViewBtn" type="button" aria-label="卡片视图">▣</button>
+            <button id="listViewBtn" type="button" aria-label="列表视图">☰</button>
+          </div>
+        </div>
+
+        <article class="review-card" id="cardView">
+          <div class="card-topline">
+            <span id="cardType">名词解释</span>
+            <button class="icon-button" id="starBtn" type="button" aria-label="收藏">☆</button>
+          </div>
+          <h3 id="cardPrompt">加载中</h3>
+          <p class="section-label" id="cardSection"></p>
+          <div class="answer-box" id="answerBox" hidden>
+            <div id="cardAnswer"></div>
+          </div>
+          <button class="reveal-button" id="revealBtn" type="button">显示答案</button>
+          <div class="card-controls">
+            <button class="icon-button" id="prevBtn" type="button" aria-label="上一题">‹</button>
+            <button class="status-button" id="againBtn" type="button">待巩固</button>
+            <button class="status-button status-button--known" id="knownBtn" type="button">已掌握</button>
+            <button class="icon-button" id="nextBtn" type="button" aria-label="下一题">›</button>
+          </div>
+          <div class="progress-line">
+            <span id="positionStat">0 / 0</span>
+            <span id="sourceStat"></span>
+          </div>
+        </article>
+
+        <section class="list-view" id="listView" hidden>
+          <div class="list-view__head">
+            <span id="listCount">0 条</span>
+            <button class="ghost-button ghost-button--small" id="resetProgressBtn" type="button">清空进度</button>
+          </div>
+          <div id="cardList" class="card-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="review-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
