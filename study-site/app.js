@@ -115,7 +115,7 @@ function makeActive(item) {
   if (state.mode === "choice" || state.mode === "mistakes") {
     return {
       id: item.id,
-      order: shuffle(item.options).map((option) => option.key),
+      order: item.options.map((option) => option.key),
       selected: [],
       answered: false,
       correct: null,
@@ -228,7 +228,7 @@ function renderChoice() {
   const ordered = active.order.map((key) => item.options.find((option) => option.key === key)).filter(Boolean);
 
   els.card.innerHTML = "";
-  els.card.append(metaRow(item, [isMulti ? "可多选" : "单选", active.answered ? "已作答" : "选项已打乱"]));
+  els.card.append(metaRow(item, [isMulti ? "可多选" : "单选", active.answered ? "已作答" : "原题顺序"]));
   els.card.append(el("h2", "prompt", item.prompt));
 
   const list = el("div", "option-list");
@@ -239,7 +239,7 @@ function renderChoice() {
     if (selected.has(option.key)) button.classList.add("selected");
     if (active.answered && answer.has(option.key)) button.classList.add("correct");
     if (active.answered && selected.has(option.key) && !answer.has(option.key)) button.classList.add("wrong");
-    button.append(el("span", "option-key", String.fromCharCode(65 + index)));
+    button.append(el("span", "option-key", option.key));
     button.append(el("span", "", option.text));
     button.addEventListener("click", () => {
       if (active.answered) return;
@@ -259,7 +259,7 @@ function renderChoice() {
 
   if (active.answered) {
     const feedback = el("div", "feedback");
-    feedback.textContent = active.correct ? "答对了。这个点可以往后放一放。" : `这题要再看一眼。正确答案：${item.answer.join("、")}`;
+    feedback.textContent = active.correct ? "答对了。这个点可以往后放一放。" : `这题要再看一眼。正确答案：${answerText(item).replace(/\n/g, "；")}`;
     els.card.append(feedback);
     const answer = el("div", "answer-block", answerText(item));
     els.card.append(answer);
