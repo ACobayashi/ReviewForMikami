@@ -79,6 +79,7 @@ function baseDeck(mode = state.mode) {
   if (mode === "choice" || mode === "judge") return data.objective;
   if (mode === "qa") return data.qa;
   if (mode === "cards") return data.knowledge;
+  if (mode === "bank") return [...data.objective, ...data.concepts, ...data.qa];
   if (mode === "mistakes") {
     const ids = new Set(Object.keys(state.stats.mistakes));
     return [...data.objective, ...data.qa, ...data.knowledge].filter((item) => ids.has(item.id));
@@ -216,6 +217,41 @@ function answerText(item) {
     const option = item.options.find((candidate) => candidate.key === key);
     return `${key}. ${option?.text || ""}`;
   }).join("\n");
+}
+
+function itemTitle(item) {
+  return item.prompt || item.title || "未命名条目";
+}
+
+function itemKind(item) {
+  if (item.options) return item.type || "客观题";
+  if (item.id?.startsWith("concept-")) return "知识点";
+  return "简答题";
+}
+
+function itemAnswer(item) {
+  if (item.options) return answerText(item);
+  return item.answer || item.body || "";
+}
+
+function practiceFromBank(item) {
+  if (item.options) {
+    state.mode = "choice";
+    state.active = makeActive(item);
+  } else if (item.id?.startsWith("concept-")) {
+    const cardItem = data.knowledge.find((candidate) => candidate.id === item.id) || {
+      ...item,
+      body: item.answer,
+      kind: "concept",
+    };
+    state.mode = "cards";
+    state.active = makeActive(cardItem);
+  } else {
+    state.mode = "qa";
+    state.active = makeActive(item);
+  }
+  saveState();
+  render();
 }
 
 function renderChoice() {
@@ -469,6 +505,57 @@ function renderMistakes() {
   els.card.append(list);
 }
 
+function renderBank() {
+  const deck = filteredDeck("bank");
+  els.card.innerHTML = "";
+  els.card.append(metaRow({ section: "题库总览", tags: [`${deck.length} 条`] }, ["可搜索", "可选择复习"]));
+  els.card.append(el("h2", "prompt", "全部知识点与题库"));
+
+  if (!deck.length) {
+    return renderEmpty();
+  }
+
+  const summary = el("div", "bank-summary");
+  summary.append(el("span", "", `客观题 ${data.objective.length}`));
+  summary.append(el("span", "", `知识点 ${data.concepts.length}`));
+  summary.append(el("span", "", `简答题 ${data.qa.length}`));
+  els.card.append(summary);
+
+  const list = el("div", "bank-list");
+  deck.forEach((item) => {
+    const row = el("article", "bank-item");
+    const head = el("div", "bank-item-head");
+    const titleWrap = el("div", "");
+    titleWrap.append(el("span", "pill", itemKind(item)));
+    titleWrap.append(el("h3", "", itemTitle(item)));
+    const practice = el("button", "secondary", item.options ? "刷这题" : "背这条");
+    practice.type = "button";
+    practice.addEventListener("click", () => practiceFromBank(item));
+    head.append(titleWrap, practice);
+    row.append(head);
+
+    if (item.options) {
+      const options = el("ol", "bank-options");
+      item.options.forEach((option) => {
+        const optionLine = el("li", "", `${option.key}. ${option.text}`);
+        if (item.answer.includes(option.key)) optionLine.classList.add("is-answer");
+        options.append(optionLine);
+      });
+      row.append(options);
+    }
+
+    const details = document.createElement("details");
+    details.className = "bank-answer";
+    const summaryLine = document.createElement("summary");
+    summaryLine.textContent = item.options ? "查看答案" : "查看内容";
+    details.append(summaryLine);
+    details.append(el("div", "", itemAnswer(item)));
+    row.append(details);
+    list.append(row);
+  });
+  els.card.append(list);
+}
+
 function renderEmpty() {
   const template = $("#emptyTemplate");
   els.card.innerHTML = "";
@@ -492,6 +579,7 @@ function render() {
   if (state.mode === "judge") return renderJudge();
   if (state.mode === "qa") return renderQa();
   if (state.mode === "cards") return renderCards();
+  if (state.mode === "bank") return renderBank();
 }
 
 els.tabs.forEach((tab) => {
