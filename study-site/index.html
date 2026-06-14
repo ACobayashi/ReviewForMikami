@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>嵌门永存刷题舱</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="./assets/circuit.svg" alt="" />
+          <div>
+            <p class="eyebrow">嵌入式期末复习</p>
+            <h1>嵌门永存刷题舱</h1>
+          </div>
+        </div>
+        <div class="quick-stats" aria-live="polite">
+          <div><span id="statDone">0</span><small>已练</small></div>
+          <div><span id="statRate">0%</span><small>正确率</small></div>
+          <div><span id="statStreak">0</span><small>连对</small></div>
+        </div>
+      </header>
+
+      <nav class="mode-tabs" aria-label="学习模式">
+        <button class="tab active" data-mode="choice" type="button">客观题</button>
+        <button class="tab" data-mode="judge" type="button">判断变式</button>
+        <button class="tab" data-mode="qa" type="button">简答默写</button>
+        <button class="tab" data-mode="cards" type="button">知识卡</button>
+        <button class="tab" data-mode="mistakes" type="button">错题本</button>
+      </nav>
+
+      <section class="controls" aria-label="筛选与操作">
+        <label class="searchbox">
+          <span>搜索</span>
+          <input id="searchInput" type="search" placeholder="章节、关键词、ARM、实时性..." />
+        </label>
+        <label class="selectbox">
+          <span>范围</span>
+          <select id="chapterSelect"></select>
+        </label>
+        <button id="shuffleBtn" class="icon-button" type="button" title="随机下一题" aria-label="随机下一题">↻</button>
+      </section>
+
+      <main class="workspace">
+        <aside class="deck-panel">
+          <div class="panel-head">
+            <h2>今日小目标</h2>
+            <span id="deckCount">0 题</span>
+          </div>
+          <div class="progress-ring" aria-label="学习进度">
+            <div>
+              <strong id="progressPercent">0%</strong>
+              <span>掌握度</span>
+            </div>
+          </div>
+          <div class="mini-grid">
+            <button type="button" data-jump="choice">刷 10 道选择</button>
+            <button type="button" data-jump="qa">背 3 道简答</button>
+            <button type="button" data-jump="cards">翻 5 张卡片</button>
+            <button type="button" data-jump="mistakes">复盘错题</button>
+          </div>
+        </aside>
+
+        <section id="studyCard" class="study-card" aria-live="polite"></section>
+      </main>
+    </div>
+
+    <template id="emptyTemplate">
+      <div class="empty-state">
+        <h2>这个范围暂时没有题</h2>
+        <p>换个关键词或章节试试。资料还在，别慌。</p>
+      </div>
+    </template>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

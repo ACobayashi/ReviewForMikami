@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-label="circuit learning map">
+  <defs>
+    <linearGradient id="board" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f7fbf8"/>
+      <stop offset="1" stop-color="#eef7f2"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="360" fill="url(#board)"/>
+  <g fill="none" stroke="#1f8a70" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".92">
+    <path d="M76 78h132l58 58h110"/>
+    <path d="M76 188h190l72-72h134l56 56h122"/>
+    <path d="M96 292h128l54-54h124l44 44h130"/>
+    <path d="M548 74h156l60 60h114"/>
+    <path d="M632 252h96l52-52h104"/>
+  </g>
+  <g fill="#ffffff" stroke="#12343b" stroke-width="5">
+    <rect x="388" y="84" width="128" height="96" rx="8"/>
+    <rect x="578" y="204" width="96" height="72" rx="8"/>
+    <rect x="206" y="132" width="88" height="72" rx="8"/>
+  </g>
+  <g fill="#f05d5e">
+    <circle cx="76" cy="78" r="12"/>
+    <circle cx="76" cy="188" r="12"/>
+    <circle cx="96" cy="292" r="12"/>
+    <circle cx="878" cy="134" r="12"/>
+    <circle cx="884" cy="200" r="12"/>
+  </g>
+  <g fill="#12343b">
+    <circle cx="266" cy="136" r="8"/>
+    <circle cx="338" cy="116" r="8"/>
+    <circle cx="528" cy="172" r="8"/>
+    <circle cx="704" cy="74" r="8"/>
+    <circle cx="780" cy="200" r="8"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#12343b">
+    <text x="412" y="142">MEM</text>
+    <text x="604" y="250">OS</text>
+    <text x="226" y="178">IO</text>
+  </g>
+</svg>
