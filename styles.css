@@ -115,6 +115,20 @@ button {
   backdrop-filter: blur(10px);
 }
 
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
 .hero__content {
   padding-top: clamp(54px, 8vw, 96px);
 }
