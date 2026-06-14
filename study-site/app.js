@@ -225,7 +225,7 @@ function renderChoice() {
   const selected = new Set(active.selected);
   const answer = new Set(item.answer);
   const isMulti = item.answer.length > 1;
-  const ordered = active.order.map((key) => item.options.find((option) => option.key === key)).filter(Boolean);
+  const ordered = item.options;
 
   els.card.innerHTML = "";
   els.card.append(metaRow(item, [isMulti ? "可多选" : "单选", active.answered ? "已作答" : "原题顺序"]));
