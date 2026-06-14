@@ -17,6 +17,11 @@ const state = {
   listMode: false,
 };
 
+const typeLabels = {
+  term: "名词解释",
+  essay: "问答题",
+};
+
 const els = {
   totalStat: document.querySelector("#totalStat"),
   knownStat: document.querySelector("#knownStat"),
@@ -59,6 +64,21 @@ function uniqueTags() {
     if (tag !== "名词" && tag !== "论述") tags.add(tag);
   }));
   return [...tags];
+}
+
+function setupTypeButtons() {
+  document.querySelectorAll("[data-type]").forEach((button) => {
+    const type = button.dataset.type;
+    const count = type === "all"
+      ? allCards.length
+      : allCards.filter((card) => card.type === type).length;
+
+    button.textContent = `${button.textContent.replace(/\s*\d+$/, "")} ${count}`;
+    if (type !== "all" && count === 0) {
+      button.disabled = true;
+      button.setAttribute("aria-disabled", "true");
+    }
+  });
 }
 
 function cardMatches(card) {
@@ -123,8 +143,8 @@ function statusLabel(card) {
 
 function deckName() {
   const names = [];
-  if (state.type === "term") names.push("名词解释");
-  if (state.type === "essay") names.push("论述题");
+  if (state.type === "term") names.push(typeLabels.term);
+  if (state.type === "essay") names.push(typeLabels.essay);
   if (state.filter === "learning") names.push("待巩固");
   if (state.filter === "known") names.push("已掌握");
   if (state.filter === "starred") names.push("收藏");
@@ -178,7 +198,7 @@ function renderCard() {
   }
 
   els.revealBtn.hidden = false;
-  els.cardType.textContent = card.type === "term" ? "名词解释" : "论述题";
+  els.cardType.textContent = typeLabels[card.type] || "问答题";
   els.cardPrompt.textContent = card.prompt;
   els.cardSection.textContent = card.section;
   els.cardAnswer.innerHTML = formatAnswer(card.answer);
@@ -212,7 +232,7 @@ function renderList() {
         <strong>${escapeHtml(card.title)}</strong>
         <span>${escapeHtml(card.section)} · ${escapeHtml(statusLabel(card))}</span>
       </span>
-      <span class="badge ${card.type === "term" ? "badge--term" : ""}">${card.type === "term" ? "名词" : "论述"}</span>
+      <span class="badge ${card.type === "term" ? "badge--term" : ""}">${card.type === "term" ? "名词" : "问答"}</span>
     `;
     item.addEventListener("click", () => {
       state.cursor = deckIndex;
@@ -275,6 +295,7 @@ function markStatus(status) {
 function setupEvents() {
   document.querySelectorAll("[data-type]").forEach((button) => {
     button.addEventListener("click", () => {
+      if (button.disabled) return;
       document.querySelectorAll("[data-type]").forEach((el) => el.classList.remove("is-active"));
       button.classList.add("is-active");
       state.type = button.dataset.type;
@@ -353,6 +374,7 @@ function setupEvents() {
   });
 }
 
+setupTypeButtons();
 renderTags();
 setupEvents();
 rebuildDeck();
